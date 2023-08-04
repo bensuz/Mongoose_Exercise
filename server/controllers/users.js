@@ -36,19 +36,16 @@ const getUserById = async (req, res) => {
 
 const updateUser = async (req, res) => {
     try {
-        const { id, body } = req.params;
-        const updatedUser = await User.findOneAndUpdate(
-            { _id: id },
-            body,
-            {
-                new: true,
-            },
-            { timeStamps: true }
-        );
+        const { id } = req.params;
+        const updatedUser = await User.findOneAndUpdate({ _id: id }, req.body, {
+            new: true,
+            timeStamps: true,
+        });
         if (!updatedUser) {
             res.status(404).json({ message: "No User Found" });
         }
         res.json(updatedUser);
+        console.log("updated user:", updatedUser);
     } catch (error) {
         res.status(500).json({ message: error.message, error: error.errors });
     }

@@ -41,11 +41,11 @@ const updateEvent = async (req, res) => {
         const { userId } = req.body;
         const updatedEvent = Event.findOneAndUpdate(
             { _id: id },
-            { $psuh: { attendees: userId } },
+            { $push: { attendees: userId } },
             {
                 new: true,
-            },
-            { timeStamps: true }
+                timestamps: true,
+            }
         );
         if (!updatedEvent) {
             res.status(404).json({ message: "User not found" });
