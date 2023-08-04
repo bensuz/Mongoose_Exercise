@@ -9,6 +9,10 @@ const eventsSchema = mongoose.Schema({
         ref: "User",
         required: [true, "Organizer is required"],
     },
+    attendees: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+    },
 });
 
 const model = mongoose.Model("Events", userSchema);

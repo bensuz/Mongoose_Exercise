@@ -21,7 +21,10 @@ const getAllEvents = async (req, res) => {
 const getEventById = async (req, res) => {
     try {
         const { id } = req.params;
-        const events = await Event.find({ _id: id });
+        const events = await Event.find({ _id: id })
+            .populate("organizer")
+            .populate("attendees")
+            .exec();
         if (events.length === 0) {
             res.status(404).json({ message: "Event not found" });
         }
@@ -35,9 +38,10 @@ const getEventById = async (req, res) => {
 const updateEvent = async (req, res) => {
     try {
         const { id, body } = req.params;
+        const { userId } = req.body;
         const updatedEvent = Event.findOneAndUpdate(
             { _id: id },
-            body,
+            { $psuh: { attendees: userId } },
             {
                 new: true,
             },
